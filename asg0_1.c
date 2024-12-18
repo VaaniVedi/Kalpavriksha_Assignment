@@ -5,7 +5,7 @@ int isNumber(char currChar){
         return 1;
     }
     return 0;
-    
+
 }
 
 int isSpace(char currChar){
@@ -34,11 +34,11 @@ int getNumber(char* currChar, int* index) {
 
 }
 
-int evaluateResult(int operands[],char op_sign[], int sign_p){
+int evaluateResult(int operands[],char operators[], int operandInd){
     int ans = operands[0];
     int index = 1; 
-    for (int i = 0; i < sign_p; i++) {
-        if (op_sign[i] == '+') {
+    for (int i = 0; i < operandInd; i++) {
+        if (operators[i] == '+') {
             ans += operands[index];
         } else {
             ans -= operands[index];
@@ -64,12 +64,13 @@ int calculate(char* inputExp) {
             operands[numIndex++] = getNumber(inputExp, &index);
         } else { 
             if (inputExp[index] == '*' || inputExp[index] == '/') {
-                char curr_operator = inputExp[index];
+                char currOperator = inputExp[index];
                 index++;
                 while (isSpace(inputExp[index])==1) index++;
+                
                 int operand_2 = getNumber(inputExp, &index); 
                 int operand_1 = operands[--numIndex];
-                if (curr_operator == '*') {
+                if (currOperator == '*') {
                     operands[numIndex++] = operand_1 * operand_2;
                 } else {
                     if(operand_2==0){
