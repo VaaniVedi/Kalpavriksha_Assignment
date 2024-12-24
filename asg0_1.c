@@ -1,40 +1,37 @@
 #include <stdio.h>
 #include <limits.h>
-int isNumber(char currChar){
-    if(currChar<='9'&&currChar>='0'){
+int isNumber(char currentCharacter){
+    if(currentCharacter<='9' && currentCharacter>='0'){
         return 1;
     }
     return 0;
-
 }
 
-int isSpace(char currChar){
-    if(currChar==' '){
+int isSpace(char currentCharacter){
+    if(currentCharacter==' '){
         return 1;
     }
     return 0;
-
 }
 
-int checkOperator(char currChar){
-    if(currChar == '+' || currChar== '-' || currChar == '*' || currChar == '/'){
+int checkOperator(char currentCharacter){
+    if(currentCharacter == '+' || currentCharacter== '-' || currentCharacter == '*' || currentCharacter == '/'){
         return 1;
     }
     return 0;
-
 }
 
-int getNumber(char* currChar, int* index) {
+int getNumber(char* currentCharacter, int* index) {
     int tempNumber = 0;
-    while (isNumber(currChar[*index])==1) {
-        tempNumber = tempNumber * 10 + (currChar[*index] - '0');
+    while (isNumber(currentCharacter[*index])==1) {
+        tempNumber = tempNumber * 10 + (currentCharacter[*index] - '0');
         (*index)++;
     }
     return tempNumber;
 
 }
 
-int evaluateResult(int operands[],char operators[], int operandInd){
+int evaluateResult(int operands[], char operators[], int operandInd){
     int ans = operands[0];
     int index = 1; 
     for (int i = 0; i < operandInd; i++) {
@@ -59,26 +56,32 @@ int calculate(char* inputExp) {
     }
 
     while (inputExp[index]) {
-        if (isSpace(inputExp[index])==1) index++;
+        if (isSpace(inputExp[index])==1){
+            index++;
+        } 
         else if (isNumber(inputExp[index])==1) {
             operands[numIndex++] = getNumber(inputExp, &index);
-        } else { 
+        } 
+        else { 
             if (inputExp[index] == '*' || inputExp[index] == '/') {
                 char currOperator = inputExp[index];
                 index++;
                 while (isSpace(inputExp[index])==1) index++;
-                
+
                 int operand_2 = getNumber(inputExp, &index); 
                 int operand_1 = operands[--numIndex];
+
                 if (currOperator == '*') {
                     operands[numIndex++] = operand_1 * operand_2;
-                } else {
+                } 
+                else {
                     if(operand_2==0){
                         return divByZero;
                     }
                     operands[numIndex++] = operand_1 / operand_2;
                 }
-            } else {
+            } 
+            else {
                 operators[operandInd++] = inputExp[index++];
             }
         }
@@ -99,6 +102,10 @@ int main() {
         inputExp[index]=inputChar;
         index++;
         inputChar=getchar();
+        if(index>10000){
+            printf("The string exceeds the input range. Please enter a shortr string.");
+            return 0;
+        }
     }
 
     inputExp[index] = '\0';
@@ -110,11 +117,9 @@ int main() {
     else if(result==INT_MAX){ 
         printf("Invalid character in the string"); 
     }
-
     else if(result==INT_MIN){
         printf("Error division by zero");
     }
-
     else {
         printf("Result: %d\n", result);
     }
