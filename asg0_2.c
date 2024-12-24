@@ -8,7 +8,7 @@ struct record {
 
 };
 
-int isUniqueId(FILE *fileptr,int id){
+int isUniqueId(FILE *fileptr, int id){
     struct record user;
     rewind(fileptr);
     while(fscanf(fileptr,"%d %s %d\n",&user.id, user.name, &user.age)==3){
@@ -20,6 +20,7 @@ int isUniqueId(FILE *fileptr,int id){
     return 1;
 
 }
+
 void createUserRecord(){
     struct record user;
     FILE* fileptr = fopen("users.txt","a+");
@@ -49,7 +50,7 @@ void createUserRecord(){
 
 void updateUserRecord(int user_id) {
     struct record user;
-    FILE* fileptr = fopen("users.txt","r+");
+    FILE* fileptr = fopen("users.txt","r");
     if(!fileptr){
         printf("Some error in file opening! \n");
         return;
@@ -133,34 +134,35 @@ void deleteUserRecord(int id){
 }
 
 int main(){
-   int choice=0, id;
-   while(choice!=5){
-    printf("\n1. Create user. \n2. Update user.\n3. Read user.\n4. Delete user.\n5. Exit");
-    printf("\nEnter choice: ");
-    scanf("%d",&choice);
-    if(choice==1){
-        createUserRecord();
-    }
-    else if(choice==2){
-        printf("Enter the ID of the user that you have to update: ");
-        scanf("%d",&id);
-        updateUserRecord(id);
-    }
-    else if(choice==3){
-        readUserRecord();        
-    }
-    else if(choice==4){
-        printf("Enter the ID of the user that you have to remove: ");
-        scanf("%d",&id);
-        deleteUserRecord(id);  
-    }
-    else if(choice==5){
-        break;
-    }
-    else{
-        printf("Invalid choice!\n");
-    }
-   }
-    return 0;
-    
+	int choice = 0, id;
+    while (choice != 5)	{
+		printf("\n1. Create user. \n2. Update user.\n3. Read user.\n4. Delete user.\n5. Exit");
+		printf("\nEnter choice: ");
+		scanf("%d", &choice);
+		if (choice == 1){
+			createUserRecord();
+		}
+		else if (choice == 2){
+			printf("Enter the ID of the user that you have to update: ");
+			scanf("%d", &id);
+			updateUserRecord(id);
+		}
+		else if (choice == 3){
+			readUserRecord();
+		}
+		else if (choice == 4){
+			printf("Enter the ID of the user that you have to remove: ");
+			scanf("%d", &id);
+			deleteUserRecord(id);
+		}
+		else if (choice == 5){
+			printf("You have successfully exited!");
+			break;
+		}
+		else{
+			printf("Invalid choice!\n");
+		}
+	}
+
+	return 0;
 }
