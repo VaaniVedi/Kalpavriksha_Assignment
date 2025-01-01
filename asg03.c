@@ -15,14 +15,14 @@ long long int modularExponentiation(long long int base, long long int exponent, 
 
 int main() {
     long long int base, exponent, modulus;
-    printf("Enter Base (B): ");
+    printf("Enter Base: ");
     scanf("%lld", &base);
-    printf("Enter Exponent (N): ");
+    printf("Enter Exponent: ");
     scanf("%lld", &exponent);
-    printf("Enter Modulus (M): ");
+    printf("Enter Modulus: ");
     scanf("%lld", &modulus);
     if (modulus <= 1) {
-        printf("Modulus M should be greater than 1.\n");
+        printf("Modulus should be greater than 1.\n");
         return 1;
     }
     printf("Result: %lld\n", modularExponentiation(base, exponent, modulus));
