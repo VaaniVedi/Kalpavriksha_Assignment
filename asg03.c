@@ -1,4 +1,5 @@
 #include <stdio.h>
+
 long long int modularExponentiation(long long int base, long long int exponent, long long int modulus) {
     long long int result = 1;
     base = base % modulus; 
@@ -10,7 +11,6 @@ long long int modularExponentiation(long long int base, long long int exponent, 
         exponent = exponent / 2;
     }
     return result;
-
 }
 
 int main() {
@@ -23,9 +23,10 @@ int main() {
     scanf("%lld", &modulus);
     if (modulus <= 1) {
         printf("Modulus should be greater than 1.\n");
-        return 1;
     }
-    printf("Result: %lld\n", modularExponentiation(base, exponent, modulus));
+    else {
+        printf("Result: %lld\n", modularExponentiation(base, exponent, modulus));
+    }
     return 0;
 
 }
