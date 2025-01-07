@@ -1,105 +1,101 @@
 #include <stdio.h>
 #include <stdlib.h>
 
-void viewMatrix(int **matrix, int rows, int columns){
-    //Function for dispaying the matrix
-    for(int indexOfRow=0; indexOfRow < rows; indexOfRow++){
-        for(int indexOfColumn=0; indexOfColumn < columns; indexOfColumn++){
-            printf("%d\t",*(*(matrix + indexOfRow) + indexOfColumn));
+void viewMatrix(int **matrix, int dimensions[2]) {
+    for (int indexOfRow = 0; indexOfRow < dimensions[0]; indexOfRow++) {
+        for (int indexOfColumn = 0; indexOfColumn < dimensions[1]; indexOfColumn++) {
+            printf("%d\t", matrix[indexOfRow][indexOfColumn]);
         }
         printf("\n");
     }
-  
 }
 
-void freeMatrix(int **matrix, int rows){
-    //Freeing memory space
-    for(int index=0; index < rows; index++){
-        free(matrix[index]);
+void freeMatrix(int **matrix, int rows) {
+    for (int indexOfRow = 0; indexOfRow < rows; indexOfRow++) {
+        free(matrix[indexOfRow]);
     }
     free(matrix);
 }
 
-int **createMatrixStructure(int rows, int columns){
-    //Function for creating a structure of 2D matrix
+int **createMatrix(int dimensions[2]) {
+    int rows = dimensions[0], columns = dimensions[1];
     int **matrix = (int **)malloc(rows * sizeof(int *));
-    for (int index = 0; index < rows; index++){
-        matrix[index] = (int *)malloc(columns * sizeof(int));
+    for (int indexOfRow = 0; indexOfRow < rows; indexOfRow++) {
+        matrix[indexOfRow] = (int *)malloc(columns * sizeof(int));
     }
     return matrix;
-  
 }
 
-void inputFromUser(int **matrix, int rows, int columns){
-    //Function for entering input in the structure of 2D matrix
+void inputFromUser(int **matrix, int dimensions[2]) {
+    int rows = dimensions[0], columns = dimensions[1];
     printf("Enter the elements of the matrix:\n");
-    for (int indexOfRow = 0; indexOfRow < rows; indexOfRow++){
-        for (int indexOfColumn = 0; indexOfColumn < columns; indexOfColumn++){
-            printf("Enter element [%d,%d]: ", indexOfRow + 1, indexOfColumn + 1);
-            scanf("%d", &*(*(matrix + indexOfRow) + indexOfColumn));
+    for (int indexOfRow = 0; indexOfRow < rows; indexOfRow++) {
+        for (int indexOfColumn = 0; indexOfColumn < columns; indexOfColumn++) {
+            printf("Enter element [%d, %d]: ", indexOfRow + 1, indexOfColumn + 1);
+            scanf("%d", &matrix[indexOfRow][indexOfColumn]);
         }
     }
-  
 }
 
-void matrixMultiplication(int **ptrToFirst, int **ptrToSecond, int **ptrToResult, int row1Matrix, int col1Matrix,  int columns){
-    //Logic of Multiplication
-    for(int indexOfRow=0; indexOfRow < row1Matrix ; indexOfRow++){
-        for(int indexOfColumn=0; indexOfColumn < columns ; indexOfColumn++){
-            *(*(ptrToResult + indexOfRow) + indexOfColumn) = 0;
-            for(int additionIndex=0; additionIndex < col1Matrix; additionIndex++){
-                *(*(ptrToResult + indexOfRow) + indexOfColumn) += *(*(ptrToFirst + indexOfRow) + additionIndex) * *(*(ptrToSecond + additionIndex) + indexOfColumn);
+void matrixMultiplication(int **first, int **second, int **result, int dimensions[3]) {
+    int rows1 = dimensions[0], column1 = dimensions[1], column2 = dimensions[2];
+    for (int indexOfRow = 0; indexOfRow < rows1; indexOfRow++) {
+        for (int indexOfColumn = 0; indexOfColumn < column2; indexOfColumn++) {
+            result[indexOfRow][indexOfColumn] = 0;
+            for (int additionIndex = 0; additionIndex < column1; additionIndex++) {
+                result[indexOfRow][indexOfColumn] += first[indexOfRow][additionIndex] * second[additionIndex][indexOfColumn];
             }
         }
     }
-  
 }
 
-void viewChoice(int **ptrToFirst, int row1Matrix, int col1Matrix,  int **ptrToSecond,  int row2Matrix, int col2Matrix){
-    //Function providing choice to view input matrix
-    printf("Do you want to view the matrix? Enter 1 to view the matrix.\n");
+void viewChoice(int **first, int dimensions1[2], int **second, int dimensions2[2]) {
+    printf("Do you want to view the matrices? Enter 1 to view them.\n");
     int optionToView;
-    scanf("%d",&optionToView);
+    scanf("%d", &optionToView);
 
-    if(optionToView==1){
+    if (optionToView == 1) {
         printf("First Matrix:\n");
-        viewMatrix(ptrToFirst,row1Matrix,col1Matrix);
+        viewMatrix(first, dimensions1);
         printf("Second Matrix:\n");
-        viewMatrix(ptrToSecond,row2Matrix,col2Matrix);
+        viewMatrix(second, dimensions2);
     }
-  
 }
 
-int main(){
-    int row1Matrix, row2Matrix, col1Matrix, col2Matrix;
-    printf("Enter rows and columns for the first matrix:");
-    scanf("%d %d",&row1Matrix,&col1Matrix);
-    printf("Enter rows and columns for the second matrix:");
-    scanf("%d %d",&row2Matrix,&col2Matrix);
-    
-    if(row2Matrix!=col1Matrix){
-        printf("Dimensionality ERROR!");
+int main() {
+    int dimensions1[2], dimensions2[2], resultDimensions[2];
+    printf("Enter rows and columns for the first matrix: ");
+    scanf("%d %d", &dimensions1[0], &dimensions1[1]);
+    printf("Enter rows and columns for the second matrix: ");
+    scanf("%d %d", &dimensions2[0], &dimensions2[1]);
+
+    if (dimensions1[1] != dimensions2[0]) {
+        printf("Dimensionality ERROR!\n");
         return 0;
     }
 
-    int **ptrToFirst = createMatrixStructure(row1Matrix,col1Matrix);
-    int **ptrToSecond = createMatrixStructure(row2Matrix,col2Matrix);
-    int **ptrToResult = createMatrixStructure(row1Matrix,col2Matrix);
+    resultDimensions[0] = dimensions1[0];
+    resultDimensions[1] = dimensions2[1];
 
-    inputFromUser(ptrToFirst, row1Matrix, col1Matrix);
-    inputFromUser(ptrToSecond, row2Matrix, col2Matrix);
+    int **first = createMatrix(dimensions1);
+    int **second = createMatrix(dimensions2);
+    int **result = createMatrix(resultDimensions);
 
-    viewChoice(ptrToFirst,row1Matrix,col1Matrix,ptrToSecond,row2Matrix,col2Matrix);
+    inputFromUser(first, dimensions1);
+    inputFromUser(second, dimensions2);
 
-    matrixMultiplication(ptrToFirst,ptrToSecond,ptrToResult,row1Matrix,col1Matrix,col2Matrix);
+    viewChoice(first, dimensions1, second, dimensions2);
+
+    int multiplicationDimensions[3] = {dimensions1[0], dimensions1[1], dimensions2[1]};
+    matrixMultiplication(first, second, result, multiplicationDimensions);
+
     printf("Result Matrix:\n");
-    viewMatrix(ptrToResult,row1Matrix,col2Matrix);
+    viewMatrix(result, resultDimensions);
 
-    freeMatrix(ptrToFirst, row1Matrix);
-    freeMatrix(ptrToSecond, row2Matrix);
-    freeMatrix(ptrToResult, row1Matrix);
+    freeMatrix(first, dimensions1[0]);
+    freeMatrix(second, dimensions2[0]);
+    freeMatrix(result, resultDimensions[0]);
 
-    printf("The memory has been freed successfully. Operation ended safely!");
+    printf("The memory has been freed successfully. Operation ended safely!\n");
     return 0;
-    
 }
