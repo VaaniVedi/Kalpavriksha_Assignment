@@ -1,7 +1,7 @@
 #include <stdio.h>
 #include <string.h>
 
-int getValidInput(const char * prompt, int min, int max) {
+int getValidInput(char * prompt, int min, int max) {
     int value;
     printf("%s", prompt);
     scanf("%d", & value);
@@ -56,8 +56,10 @@ int countNamesStartingWithVowel(int rows, int columns, char names[rows][columns]
     for (int rowIndex = 0; rowIndex < rows; rowIndex++) {
         for (int colIndex = 0; colIndex < columns; colIndex++) {
             char firstChar = names[rowIndex][colIndex][0];
-            if (firstChar == 'A' || firstChar == 'E' || firstChar == 'I' || firstChar == 'O' || firstChar == 'U' ||
-                firstChar == 'a' || firstChar == 'e' || firstChar == 'i' || firstChar == 'o' || firstChar == 'u') {
+            if(firstChar >= 'a' && firstChar <= 'z'){
+                firstChar -= 32;
+            }
+            if (firstChar == 'A' || firstChar == 'E' || firstChar == 'I' || firstChar == 'O' || firstChar == 'U') {
                 count++;
             }
         }
