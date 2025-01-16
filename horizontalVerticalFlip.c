@@ -1,29 +1,29 @@
 #include <stdio.h>
 
-void horizontal(int matrix[][100], int m, int n)
+void horizontal(int matrix[][100], int row, int col)
 {
     int temp;
-    for (int i = 0; i < n; i++)
+    for (int indexRow = 0; indexRow < col; indexRow++)
     {
-        for (int j = 0; j < m / 2; j++)
+        for (int indexCol = 0; indexCol < row / 2; indexCol++)
         {
-            temp = matrix[i][j];
-            matrix[i][j] = matrix[i][m - j - 1];
-            matrix[i][m - j - 1] = temp;
+            temp = matrix[indexRow][indexCol];
+            matrix[indexRow][indexCol] = matrix[indexRow][row - indexCol - 1];
+            matrix[indexRow][row - indexCol - 1] = temp;
         }
     }
 }
 
-void vertical(int matrix[][100], int m, int n)
+void vertical(int matrix[][100], int row, int col)
 {
     int temp;
-    for (int i = 0; i < n/2; i++)
+    for (int indexRow = 0; indexRow < col/2; indexRow++)
     {
-        for (int j = 0; j < m; j++)
+        for (int indexCol = 0; indexCol < row; indexCol++)
         {
-            temp = matrix[i][j];
-            matrix[i][j] = matrix[m - i - 1][j];
-            matrix[m - i - 1][j] = temp;
+            temp = matrix[indexRow][j];
+            matrix[indexRow][indexCol] = matrix[row - indexRow - 1][indexCol];
+            matrix[row - indexRow - 1][indexCol] = temp;
         }
     }
 }
@@ -42,8 +42,10 @@ int main()
             scanf("%d", &matrix[i][j]);
         }
     }
+    
     horizontal(matrix,m,n);
     vertical(matrix,m,n);
+    
     printf("MATRIX AFTER FLIP H AND V\n");
     for (int i = 0; i < n; i++)
     {
