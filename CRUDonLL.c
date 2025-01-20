@@ -147,7 +147,7 @@ void deleteAtPosition(int position)
 void viewList()
 {
     struct node *temp = start;
-    printf("\nThe current state of Linked List is:\n");
+    printf("\n");
     while (temp)
     {
         printf("%d ", temp->data);
@@ -190,10 +190,10 @@ int main()
     scanf("%d", &totalOperations);
     int operation;
     int index = 0;
-    printf("1 x: Add x to the end. (x: is any number and pos: position)\n");
-    printf("2 x: Add x at the beginning.\n3 pos x: Add x at position pos (1-indexed).\n");
-    printf("4: Display all elements.\n5 pos x: Update the element at position pos to x.\n6: Delete the first element.\n");
-    printf("7: Delete the last element.\n8 pos: Delete the element at position pos (1-indexed).\n");
+    printf("1 Add x to the end. (x: is any number and pos: position)\n");
+    printf("2 Add x at the beginning.\n3 Add x at position pos (1-indexed).\n");
+    printf("4 Display all elements.\n5 Update the element at position pos to x.\n6 Delete the first element.\n");
+    printf("7 Delete the last element.\n8 Delete the element at position pos (1-indexed).\n");
     while (index < totalOperations)
     {
         scanf("%d", &operation);
