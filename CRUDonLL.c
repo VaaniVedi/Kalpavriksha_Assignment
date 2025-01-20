@@ -52,19 +52,20 @@ void insertAtPosition(int position, int value)
     {
         temp = temp->next;
         position--;
-        if (temp->next == NULL)
-        {
-            if (position == 2)
-            {
-                insertAtLast(value);
-                free(p);
-                return;
-            }
-            printf("\nInvalid Operation\n");
-            return;
-        }
     }
+    if (temp == NULL)
+    {
+        printf("\nInvalid Operation\n");
+        free(p);
+        return;
+    }
+    if (temp->next == NULL && position == 2)
+    {
 
+        insertAtLast(value);
+        free(p);
+        return;
+    }
     p->next = temp->next;
     temp->next = p;
     p->data = value;
@@ -188,46 +189,73 @@ int main()
     int totalOperations;
     scanf("%d", &totalOperations);
     int operation;
-    int position, value;
-    while (totalOperations > 0)
+    int index = 0;
+    printf("1 x: Add x to the end. (x: is any number and pos: position)\n");
+    printf("2 x: Add x at the beginning.\n3 pos x: Add x at position pos (1-indexed).\n");
+    printf("4: Display all elements.\n5 pos x: Update the element at position pos to x.\n6: Delete the first element.\n");
+    printf("7: Delete the last element.\n8 pos: Delete the element at position pos (1-indexed).\n");
+    while (index < totalOperations)
     {
         scanf("%d", &operation);
         switch (operation)
         {
         case 1:
+        {
+            int value;
             scanf("%d", &value);
             insertAtLast(value);
             break;
+        }
         case 2:
+        {
+            int value;
             scanf("%d", &value);
             insertAtBegin(value);
             break;
+        }
         case 3:
-            scanf("%d %d", &value, &position);
+        {
+            int value, position;
+            scanf("%d %d", &position, &value);
             insertAtPosition(position, value);
             break;
+        }
         case 4:
+        {
             viewList();
             break;
+        }
         case 5:
-            scanf("%d %d", &value, &position);
+        {
+            int value, position;
+            scanf("%d %d", &position, &value);
             updateList(position, value);
             break;
+        }
         case 6:
+        {
             deleteFirst();
             break;
+        }
         case 7:
+        {
             deleteEnd();
             break;
+        }
         case 8:
+        {
+            int position;
             scanf("%d", &position);
             deleteAtPosition(position);
             break;
+        }
         default:
+        {
             printf("Invalid Operation");
             break;
         }
-        totalOperations--;
+        }
+        index++;
     }
 
     return 0;
