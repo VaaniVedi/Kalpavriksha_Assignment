@@ -7,32 +7,40 @@ struct node
     struct node *next;
 };
 
-struct node *start = NULL;
-
-void insert(int item)
+void insertAtBegin(struct node **start, int item)
 {
-    struct node *n, *temp;
-    n = (struct node *)malloc(sizeof(struct node));
-    n->data = item;
-    n->next = NULL;
+    struct node *temp;
+    temp = (struct node *)malloc(sizeof(struct node));
+    temp->data = item;
+    temp->next = *start;
+    *start = temp;
+}
+
+void insert(struct node **start, int item)
+{
+    struct node *newNode, *temp;
+    newNode = (struct node *)malloc(sizeof(struct node));
+    newNode->data = item;
+    newNode->next = NULL;
     if (start == NULL)
     {
-        start = n;
+        *start = newNode;
     }
     else
     {
-        temp = start;
+        temp = *start;
         while (temp->next != NULL)
         {
             temp = temp->next;
         }
-        temp->next = n;
+        temp->next = newNode;
     }
 }
 
-void viewList()
+void viewList(struct node *start)
 {
-    struct node *temp = start;
+    struct node *temp;
+    temp = start;
     printf("\nThe current state of Linked List is:\n");
     while (temp)
     {
@@ -42,31 +50,31 @@ void viewList()
     return;
 }
 
-void rearrange()
+void reorder(struct node **start)
 {
-    if (!start || !start->next || !start->next->next){
+    if (!start || !(*start)->next || !(*start)->next->next)
+    {
         return;
     }
-
-    struct node *slow = start, *fast = start;
+    struct node *slow = *start, *fast = *start;
     while (fast->next && fast->next->next)
     {
         slow = slow->next;
         fast = fast->next->next;
     }
 
-    struct node *prev = NULL, *cur = slow->next, *Next;
-    while (cur)
+    struct node *prev = NULL, *currentNode = slow->next, *Next;
+    while (currentNode)
     {
-        Next = cur->next;
-        cur->next = prev;
-        prev = cur;
-        cur = Next;
+        Next = currentNode->next;
+        currentNode->next = prev;
+        prev = currentNode;
+        currentNode = Next;
     }
     slow->next = NULL;
 
-    struct node *A = start, *B = prev;
-    while (A!=NULL && B!=NULL)
+    struct node *A = *start, *B = prev;
+    while (A != NULL && B != NULL)
     {
         struct node *next1 = A->next;
         struct node *next2 = B->next;
@@ -81,18 +89,23 @@ void rearrange()
 
 int main()
 {
-    int n;
+    struct node *start = NULL;
+    int nodes;
     printf("Enter the total number of nodes:\n");
-    scanf("%d", &n);
+    scanf("%d", &nodes);
     printf("Enter the elements:\n");
-    int count = 0;
-    while (count < n)
+    int item;
+    scanf("%d", &item);
+    insertAtBegin(&start, item);
+    int count = 1;
+    while (count < nodes)
     {
         int value;
         scanf("%d", &value);
-        insert(value);
+        insert(&start, value);
         count++;
     }
-    rearrange();
+    reorder(&start);
     viewList(start);
 }
+
