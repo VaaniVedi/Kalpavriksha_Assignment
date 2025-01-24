@@ -6,31 +6,41 @@ struct node
     int data;
     struct node *next;
 };
-struct node *start = NULL;
 
-void insert(int item){
-    struct node *n, *temp;
-    n = (struct node *)malloc(sizeof(struct node));
-    n->data = item;
-    n->next = NULL;
+void insertAtBegin(struct node **start, int item)
+{
+    struct node *temp;
+    temp = (struct node *)malloc(sizeof(struct node));
+    temp->data = item;
+    temp->next = *start;
+    *start = temp;
+}
+
+void insert(struct node **start, int item)
+{
+    struct node *newNode, *temp;
+    newNode = (struct node *)malloc(sizeof(struct node));
+    newNode->data = item;
+    newNode->next = NULL;
     if (start == NULL)
     {
-        start = n;
+        *start = newNode;
     }
     else
     {
-        temp = start;
+        temp = *start;
         while (temp->next != NULL)
         {
             temp = temp->next;
         }
-        temp->next = n;
+        temp->next = newNode;
     }
 }
 
-void viewList()
+void viewList(struct node *start)
 {
-    struct node *temp = start;
+    struct node *temp;
+    temp = start;
     printf("\nThe current state of Linked List is:\n");
     while (temp)
     {
@@ -40,48 +50,61 @@ void viewList()
     return;
 }
 
-void rearrange(){
+void rearrange(struct node **start)
+{
     int odd[50];
     int even[50];
-    struct node * temp  = start;
+    struct node *temp = *start;
     int eveIndex = 0, oddIndex = 0;
-    while(temp){
-        int test = temp->data;
-        if(test%2==0){
-            even[eveIndex++] = test;
+    while (temp)
+    {
+        int nodeData = temp->data;
+        if (nodeData % 2 == 0)
+        {
+            even[eveIndex++] = nodeData;
         }
-        else{
-            odd[oddIndex++] = test;
+        else
+        {
+            odd[oddIndex++] = nodeData;
         }
         temp = temp->next;
     }
-    temp = start;
+    temp = *start;
 
-    while(temp){
-       for(int i=0;i<eveIndex;i++){
-        temp->data = even[i];
-        temp = temp->next;
-       }
-       for(int i=0;i<oddIndex;i++){
-        temp->data = odd[i];
-        temp = temp->next;
-       }
+    while (temp)
+    {
+        for (int index = 0; index < eveIndex; index++)
+        {
+            temp->data = even[index];
+            temp = temp->next;
+        }
+        for (int index = 0; index < oddIndex; index++)
+        {
+            temp->data = odd[index];
+            temp = temp->next;
+        }
     }
-
 }
 
-int main(){
-    int n;
+int main()
+{
+    struct node *start = NULL;
+    int nodes;
     printf("Enter the total number of nodes:\n");
-    scanf("%d",&n);
+    scanf("%d", &nodes);
     printf("Enter the elements:\n");
-    int count = 0;
-    while(count<n){
+    int item;
+    scanf("%d", &item);
+    insertAtBegin(&start, item);
+    int count = 1;
+    while (count < nodes)
+    {
         int value;
-        scanf("%d",&value);
-        insert(value);
+        scanf("%d", &value);
+        insert(&start, value);
         count++;
     }
-    rearrange();
+    rearrange(&start);
     viewList(start);
 }
+
