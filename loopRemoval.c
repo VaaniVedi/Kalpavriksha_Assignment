@@ -11,13 +11,13 @@ struct node *start = NULL;
 
 void insert(int item)
 {
-    struct node *n, *temp;
-    n = (struct node *)malloc(sizeof(struct node));
-    n->data = item;
-    n->next = NULL;
+    struct node *newNode, *temp;
+    newNode = (struct node *)malloc(sizeof(struct node));
+    newNode->data = item;
+    newNode->next = NULL;
     if (start == NULL)
     {
-        start = n;
+        start = newNode;
     }
     else
     {
@@ -26,7 +26,7 @@ void insert(int item)
         {
             temp = temp->next;
         }
-        temp->next = n;
+        temp->next = newNode;
     }
 }
 
@@ -40,6 +40,30 @@ void viewList()
         temp = temp->next;
     }
     return;
+}
+
+void createCycle(){
+    printf("From which node do you want the cycle to start: \nEnter 0 if you want no cycle\n");
+    int cycleAt;
+    scanf("%d", &cycleAt);
+    if(cycleAt!=0){
+        struct node *cycleEnd = start;
+        struct node *cycleStart = start;
+        int index = 1;
+        while (cycleEnd->next != NULL)
+        {
+            cycleEnd = cycleEnd->next;
+        }
+        while (cycleStart->next != NULL && index < cycleAt)
+        {
+            cycleStart = cycleStart->next;
+            index++;
+        }
+        if (cycleStart != NULL)
+        {
+            cycleEnd->next = cycleStart;
+        }
+    }
 }
 
 struct node *loopDetect()
@@ -59,7 +83,6 @@ struct node *loopDetect()
             return slow;
         }
     }
-    return NULL;
 }
 
 void rearrange()
@@ -81,41 +104,23 @@ void rearrange()
 
 int main()
 {
-    int n;
+    int nodes;
     printf("Enter total number of nodes:\n");
-    scanf("%d", &n);
+    scanf("%d", &nodes);
     printf("Enter elements:\n");
     int count = 0;
-    while (count < n)
+    while (count < nodes)
     {
         int value;
         scanf("%d", &value);
         insert(value);
         count++;
     }
+    createCycle();
 
-    printf("From which node do you want the cycle to start: \nEnter 0 if you want no cycle\n");
-    int cyc;
-    scanf("%d", &cyc);
-    if(cyc!=0){
-        struct node *cycleEnd = start;
-        struct node *cycleStart = start;
-        int index = 1;
-        while (cycleEnd->next != NULL)
-        {
-            cycleEnd = cycleEnd->next;
-        }
-        while (cycleStart->next != NULL && index < cyc)
-        {
-            cycleStart = cycleStart->next;
-            index++;
-        }
-        if (cycleStart != NULL)
-        {
-            cycleEnd->next = cycleStart;
-        }
-    }
+    
 
     rearrange();
     viewList(start);
 }
+
