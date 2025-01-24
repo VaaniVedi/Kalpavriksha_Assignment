@@ -1,5 +1,5 @@
 #include <stdio.h>
-#include <stdio.h>
+
 int MAX_ROW = 30;
 int MAX_COL = 30;
 int minimumVal(int first, int second, int third, int fourth)
@@ -273,3 +273,4 @@ int main()
 
     return 0;
 }
+
