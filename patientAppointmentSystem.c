@@ -19,44 +19,99 @@ struct record *create(int id, char arr[])
     return newNode;
 }
 
-int priority(char *arr)
+int priority(char *severity)
 {
-    if (strcmp(arr, "Critical") == 0)
+    if (strcmp(severity, "Critical") == 0) return 1;
+    if (strcmp(severity, "Serious") == 0) return 2;
+    return 3; 
+}
+
+struct record *findMid(struct record *head)
+{
+    struct record *slow = head;
+    struct record *fast = head->next;
+    while (fast != NULL && fast->next != NULL)
     {
-        return 1;
+        slow = slow->next;
+        fast = fast->next->next;
     }
-    else if (strcmp(arr, "Serious") == 0)
+    return slow;
+}
+
+struct record *merge(struct record *left, struct record *right){
+    if(left == NULL){
+        return right;
+    }
+    if(right == NULL){
+        return left;
+    }
+    struct record *newHead = NULL;
+    if ((priority(left->condition) < priority(right->condition) || (priority(left->condition) == priority(right->condition) && left->id < right->id)))
     {
-        return 2;
+        newHead = left;
+        left = left->next;
     }
     else
     {
-        return 3;
+        newHead = right;
+        right = right->next;
     }
+
+    struct record *current = newHead;
+    while (left != NULL && right != NULL)
+    {
+        if (priority(left->condition) < priority(right->condition) || (priority(left->condition) == priority(right->condition) && left->id < right->id)) 
+        {
+            current->next = left;
+            left = left->next;
+        }
+        else
+        {
+            current->next = right;
+            right = right->next;
+        }
+        current = current->next;
+    }
+
+    if (left != NULL) current->next = left;
+    if (right != NULL) current->next = right;
+    
+    return newHead;
+}
+
+struct record *mergeSort(struct record *head)
+{
+    if (head == NULL || head->next == NULL) return head;
+    struct record *mid = findMid(head);
+    struct record *left = head;
+    struct record *right = mid->next;
+    mid->next = NULL;
+    left = mergeSort(left);
+    right = mergeSort(right);
+    struct record *result = merge(left, right);
+    return result;
 }
 
 void insertNode(struct record **head, int id, char arr[])
 {
     struct record *newNode = create(id, arr);
-    if (*head == NULL || priority(arr) < priority((*head)->condition))
+    if (*head == NULL )
     {
-        newNode->next = *head;
         *head = newNode;
-        return;
     }
-
-    struct record *temp = *head;
-    while (temp->next != NULL && priority(temp->next->condition) <= priority(arr))
-    {
-        temp = temp->next;
+    else{
+        struct record* temp = *head;
+        while (temp->next != NULL)
+        {
+            temp = temp->next;
+        }
+        temp->next = newNode;  
     }
-    newNode->next = temp->next;
-    temp->next = newNode;
 }
 
 void printEle(struct record *head)
 {
-    printf("The sorted list of patients based on severity priority order.\n");
+    
     while (head != NULL)
     {
         printf("%d %s\n", head->id, head->condition);
@@ -76,8 +131,13 @@ int main()
         scanf("%d %s", &id, severity);
         insertNode(&head, id, severity);
     }
+    printf("The original list of patients based on severity priority order.\n");
+    printEle(head);
+    
+    head = mergeSort(head);
+    
+    printf("\nThe sorted list of patients based on severity priority order.\n");
     printEle(head);
     return 0;
 }
 
- 
