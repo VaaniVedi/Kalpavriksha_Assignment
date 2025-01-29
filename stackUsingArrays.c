@@ -9,15 +9,16 @@ struct stack
 
 void push(struct stack *myStack)
 {
-    if(myStack->indexOfStack >= MAX_SIZE){
+    if (myStack->indexOfStack >= MAX_SIZE)
+    {
         printf("Stack Overflow!\n");
         return;
     }
     int value;
     printf("Enter the value that you want to push in the stack:\n");
-    scanf("%d",&value);
+    scanf("%d", &value);
     myStack->arr[(myStack->indexOfStack)] = value;
-    myStack->indexOfStack++;        
+    myStack->indexOfStack++;
 }
 
 void pop(struct stack *myStack)
@@ -27,18 +28,19 @@ void pop(struct stack *myStack)
         printf("Stack Underflow!\n");
         return;
     }
-    int popValue = myStack->arr[(myStack->indexOfStack)-1];
+    int popValue = myStack->arr[(myStack->indexOfStack) - 1];
     myStack->indexOfStack--;
-    printf("The value that was removed is %d\n",popValue);
+    printf("The value that was removed is %d\n", popValue);
 }
 
 void peek(struct stack myStack)
 {
-    if(myStack.indexOfStack==0){
+    if (myStack.indexOfStack == 0)
+    {
         printf("The top of the stack is empty.\n");
         return;
     }
-    printf("The top of the stack is %d\n",myStack.arr[myStack.indexOfStack-1]);
+    printf("The top of the stack is %d\n", myStack.arr[myStack.indexOfStack - 1]);
 }
 
 void isEmpty(struct stack myStack)
