@@ -1,5 +1,6 @@
 #include <stdio.h>
-#define MAX_SIZE 100
+#include <stdlib.h>
+#define MAX_SIZE 10
 
 struct Queue
 {
@@ -10,21 +11,21 @@ struct Queue
 struct Stack
 {
     struct Queue Q;
-    int size;
 };
 
 int isEmptyQueue(struct Queue *q)
 {
-    if (q->front == -1)
-    {
-        return 1;
-    }
-    return 0;
+    return q->size == 0;
+}
+
+int isFullQueue(struct Queue *q)
+{
+    return q->size == MAX_SIZE;
 }
 
 void enqueue(struct Queue *q, int value)
 {
-    if (q->rear == MAX_SIZE - 1)
+    if (isFullQueue(q))
     {
         printf("Queue overflow!\n");
         return;
@@ -33,9 +34,9 @@ void enqueue(struct Queue *q, int value)
     {
         q->front = 0;
     }
-    q->rear++;
-    q->size++;
+    q->rear = (q->rear + 1) % MAX_SIZE;
     q->arr[q->rear] = value;
+    q->size++;
 }
 
 void dequeue(struct Queue *q)
@@ -45,34 +46,44 @@ void dequeue(struct Queue *q)
         printf("Queue underflow!\n");
         return;
     }
-    int data = q->arr[q->front];
+    q->front = (q->front + 1) % MAX_SIZE;
     q->size--;
-    if (q->front == q->rear)
+    if (q->size == 0)
     {
         q->front = q->rear = -1;
-    }
-    else
-    {
-        q->front++;
     }
 }
 
 int front(struct Queue *q)
 {
+    if (isEmptyQueue(q))
+    {
+        printf("Queue is empty.\n");
+        return -1;
+    }
     return q->arr[q->front];
 }
 
 void push(struct Stack *stack)
 {
+    if (isFullQueue(&stack->Q))
+    {
+        printf("Stack overflow!");
+        return;
+    }
+
     int value;
     printf("Enter the value which you want to push to the stack:\n");
     scanf("%d", &value);
-    stack->size++;
+
     enqueue(&stack->Q, value);
-    for (int i = 0; i < (stack->Q.size) - 1; i++)
+    int originalSize = stack->Q.size - 1;
+
+    for (int i = 0; i < originalSize; i++)
     {
-        enqueue(&stack->Q, front(&stack->Q));
+        int temp = front(&stack->Q);
         dequeue(&stack->Q);
+        enqueue(&stack->Q, temp);
     }
 }
 
@@ -94,14 +105,14 @@ void pop(struct Stack *stack)
         printf("Stack underflow!\n");
         return;
     }
-    stack->size--;
+
     printf("The removed value is %d.\n", peek(stack));
     dequeue(&stack->Q);
 }
 
 int size(struct Stack stack)
 {
-    return stack.size;
+    return stack.Q.size;
 }
 
 void isEmpty(struct Stack stack)
@@ -120,7 +131,6 @@ int main()
     stack.Q.front = -1;
     stack.Q.rear = -1;
     stack.Q.size = 0;
-    stack.size = 0;
 
     int choice;
     while (1)
