@@ -53,7 +53,6 @@ void dequeue(struct Queue *q)
     {
         q->front++;
     }
-    printf("The removed value is %d.\n", data);
 }
 
 int front(struct Queue *q)
