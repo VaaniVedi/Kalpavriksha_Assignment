@@ -1,5 +1,6 @@
 #include <stdlib.h>
 #include <stdio.h>
+
 struct node
 {
     int item;
@@ -119,7 +120,6 @@ int main()
     int totElements;
     printf("Enter the total elements in linked list:\n");
     scanf("%d", &totElements);
-    if(totElements)
     struct node *head = NULL;
     printf("Enter the value that is greater than 0 and less than 1000\n");
     for (int index = 0; index < totElements; index++)
@@ -130,7 +130,7 @@ int main()
             scanf("%d", &item);
             if (item < 0 || item > 1000)
             {
-                printf("Invalid input! Please enter a value between 9 and 1000.\n");
+                printf("Invalid input! Please enter a value between 1 and 1000.\n");
             }
         } while (item < 0 || item > 1000);
         insert(item, &head);
