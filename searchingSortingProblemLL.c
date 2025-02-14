@@ -18,8 +18,6 @@ struct node *createNode(int data)
 void insert(int data, struct node **head)
 {
     struct node *newNode = createNode(data);
-    newNode->item = data;
-    newNode->next = NULL;
     if ((*head) == NULL)
     {
         *head = newNode;
