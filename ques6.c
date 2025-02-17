@@ -1,3 +1,12 @@
+// Simulate a network printer's job queue management system using the queue data structure in C. The system should handle print requests in a First In, First Out (FIFO)
+// manner. Write a C program with options that let users interactively choose and perform printing operations mentioned in below tasks section:
+// Tasks: Implement the functions to perform the following operations on a queue:
+// a. Add a Print Job (Enqueue): Allow users to add new print jobs, including details like the document name and number of pages.
+// b. View Pending Jobs (Read): Display all pending print jobs in the order they will be processed.
+// c. Edit a Job (Update): Provide an option to update the details of a specific print job before it starts printing.
+// d. Process a Job (Dequeue): Remove the job at the front of the queue after it has been printed.
+// e. Cancel a Job: Enable users to delete a specific job from the queue.
+
 #include <stdio.h>
 #include <string.h>
 #define MAX_SIZE 20
