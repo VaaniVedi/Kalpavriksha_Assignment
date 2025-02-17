@@ -69,6 +69,10 @@ int main()
     int n;
     printf("Enter the value upto which you want to see the iterations:\n");
     scanf("%d", &n);
+    if(n>10){
+        printf("Can't generate for more that 10 as queue size won't support.\nStill if you want to generate increase the max_size from 20 to a valid value\n");
+        return 0;
+    }
     enqueue(&q, "1");
     while (n--)
     {
